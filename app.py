@@ -8,7 +8,6 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from server.agent_routes import router as agent_router
 from server.ai_routes import router as ai_router
 from server.data_routes import router as data_router
 from server.genie_routes import router as genie_router
@@ -20,7 +19,6 @@ app.include_router(data_router, prefix="/api")
 app.include_router(ai_router, prefix="/api")
 app.include_router(genie_router, prefix="/api")
 app.include_router(synthesis_router, prefix="/api")
-app.include_router(agent_router, prefix="/api")
 
 
 @app.get("/api/health")
