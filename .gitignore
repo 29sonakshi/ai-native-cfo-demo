@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Env / secrets
+.env
+frontend/.env
+
+# Node / frontend build
+node_modules/
+frontend/dist/
+npm-debug.log*
+
+# Databricks
+.databricks/
+.genie_space_id
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+*.swp

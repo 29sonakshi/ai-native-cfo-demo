@@ -1,0 +1,24 @@
+command:
+  - "python"
+  - "-m"
+  - "uvicorn"
+  - "app:app"
+  - "--host"
+  - "0.0.0.0"
+  - "--port"
+  - "8000"
+
+# Set these to match your own Databricks workspace before deploying.
+env:
+  - name: WAREHOUSE_ID
+    value: "REPLACE_WITH_YOUR_WAREHOUSE_ID"
+  - name: UC_CATALOG
+    value: "meridian_demo"
+  - name: UC_SCHEMA
+    value: "meridian_cfo"
+  - name: UC_SCHEMA_AI
+    value: "meridian_ai"
+  - name: GENIE_SPACE_ID
+    value: "REPLACE_WITH_YOUR_GENIE_SPACE_ID"
+  - name: SYNTH_MODEL
+    value: "databricks-claude-sonnet-4-6"
