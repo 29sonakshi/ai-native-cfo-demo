@@ -118,8 +118,8 @@ executive summary.
 
 **1. Clone**
 ```bash
-git clone https://github.com/29sonakshi/meridian-ai-cockpit.git
-cd meridian-ai-cockpit
+git clone https://github.com/29sonakshi/ai-native-cfo-demo.git
+cd ai-native-cfo-demo
 ```
 
 **2. Create the sample data.** Import `setup/01_generate_sample_data.py` as a notebook, set
@@ -155,9 +155,9 @@ set -a && source .env && set +a
 uvicorn app:app --reload --port 8000        # http://localhost:8000
 
 # Databricks App
-databricks apps create meridian-ai-cockpit
-databricks sync . /Workspace/Users/<you>/meridian-ai-cockpit
-databricks apps deploy meridian-ai-cockpit --source-code-path /Workspace/Users/<you>/meridian-ai-cockpit
+databricks apps create ai-native-cfo-demo
+databricks sync . /Workspace/Users/<you>/ai-native-cfo-demo
+databricks apps deploy ai-native-cfo-demo --source-code-path /Workspace/Users/<you>/ai-native-cfo-demo
 ```
 After deploy, grant the app's service principal `SELECT` on both schemas, `CAN_USE` on the
 SQL warehouse, and `CAN_RUN` on the Genie space.
