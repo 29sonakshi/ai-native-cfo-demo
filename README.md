@@ -11,14 +11,6 @@ subsidiaries.
 > Any resemblance to an existing company or trademark is coincidental; no affiliation
 > or endorsement is intended.
 
-## Watch the demo
-
-<a href="https://vimeo.com/1225420242/e492d33b1e">
-  <img src="docs/01-group-perf.png" alt="Watch the AI-native CFO demo on Vimeo" width="800">
-</a>
-
-[▶ Watch the AI-native CFO demo on Vimeo](https://vimeo.com/1225420242/e492d33b1e)
-
 ## The story this demo tells
 
 Meridian Bank is a digital banking group with three entities:
@@ -187,9 +179,17 @@ frontend/src/          React + Vite + TypeScript
   components/          FinancialSummary, Synthesizer, shared ui
   lib/                 API client + formatters
 setup/                 Databricks notebooks: 01 sample data, 02 Genie space
-docs/                  README screenshots
+docs/                  README screenshots and demo-video thumbnail
 .env.example           Local-dev config template
 ```
+
+## Watch the demo
+
+<a href="https://vimeo.com/1225420242/e492d33b1e">
+  <img src="docs/demo-video-thumbnail.png" alt="Watch Powering the AI-Native CFO on Vimeo" width="800">
+</a>
+
+[▶ Watch “Powering the AI-Native CFO” on Vimeo](https://vimeo.com/1225420242/e492d33b1e)
 
 ## License
 
