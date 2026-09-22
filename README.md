@@ -11,6 +11,14 @@ subsidiaries.
 > Any resemblance to an existing company or trademark is coincidental; no affiliation
 > or endorsement is intended.
 
+## Watch the demo
+
+<a href="https://vimeo.com/1225420242/e492d33b1e">
+  <img src="docs/01-group-perf.png" alt="Watch the AI-native CFO demo on Vimeo" width="800">
+</a>
+
+[▶ Watch the AI-native CFO demo on Vimeo](https://vimeo.com/1225420242/e492d33b1e)
+
 ## The story this demo tells
 
 Meridian Bank is a digital banking group with three entities:
@@ -93,10 +101,6 @@ Genie One experience and draft a board-ready action plan from the conversation.
 ![Group Perf](docs/01-group-perf.png)
 ![AI Spend](docs/02-ai-spend.png)
 ![CFO Q&A](docs/03-cfo-qa.png)
-
-## Demo video
-
-[Watch the AI-native CFO demo on Vimeo](https://vimeo.com/1225420242/e492d33b1e)
 
 ## Architecture
 
