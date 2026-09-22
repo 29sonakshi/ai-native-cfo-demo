@@ -94,6 +94,10 @@ Genie One experience and draft a board-ready action plan from the conversation.
 ![AI Spend](docs/02-ai-spend.png)
 ![CFO Q&A](docs/03-cfo-qa.png)
 
+## Demo video
+
+[Watch the AI-native CFO demo on Vimeo](https://vimeo.com/1225420242/e492d33b1e)
+
 ## Architecture
 
 ```
