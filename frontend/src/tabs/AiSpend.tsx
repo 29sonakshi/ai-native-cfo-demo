@@ -1,7 +1,7 @@
 import { AlertTriangle, Boxes, Coins, Gauge, Layers, Network, Percent, TrendingUp } from 'lucide-react'
 import { Bar, BarChart, CartesianGrid, Cell, LabelList, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { api, useFetch } from '../lib/api'
-import type { AiEntityRow } from '../lib/api'
+import type { AiEntityRow, ProviderMix, TierSplit } from '../lib/api'
 import { fmtMoney, fmtMonthLabel, fmtPct } from '../lib/format'
 import { Card, ErrorNote, KpiCard, KpiSkeletonRow, SectionTitle, Skeleton } from '../components/ui'
 
@@ -22,28 +22,36 @@ const TIER_COLORS: Record<string, string> = { Frontier: '#4f46e5', 'Open-weight'
 
 function pctStr(n: number, d = 0) { return `${n.toFixed(d)}%` }
 
-function ChartTooltip({ active, payload, label, fmt }: any) {
+interface TooltipEntry { color?: string; name?: string; value?: unknown }
+interface ChartTooltipProps {
+  active?: boolean
+  payload?: TooltipEntry[]
+  label?: unknown
+  fmt?: (value: number) => string
+}
+
+function ChartTooltip({ active, payload, label, fmt }: ChartTooltipProps) {
   if (!active || !payload?.length) return null
   return (
     <div className="tooltip-card">
-      <div className="t-label">{label}</div>
-      {payload.map((p: any, i: number) => (
+      <div className="t-label">{String(label ?? '')}</div>
+      {payload.map((p, i) => (
         <div className="t-row" key={i}>
           <span style={{ color: p.color }}>{p.name}</span>
-          <strong>{fmt ? fmt(p.value) : p.value}</strong>
+          <strong>{fmt ? fmt(Number(p.value)) : String(p.value ?? '')}</strong>
         </div>
       ))}
     </div>
   )
 }
 
-function DonutTooltip({ active, payload, fmt }: any) {
+function DonutTooltip({ active, payload, fmt }: ChartTooltipProps) {
   if (!active || !payload?.length) return null
   const p = payload[0]
   return (
     <div className="tooltip-card">
       <div className="t-label">{p.name}</div>
-      <div className="t-row"><span>Spend</span><strong>{fmt(p.value)}</strong></div>
+      <div className="t-row"><span>Spend</span><strong>{fmt ? fmt(Number(p.value)) : String(p.value ?? '')}</strong></div>
     </div>
   )
 }
@@ -114,7 +122,7 @@ export function AiSpend() {
                 <Tooltip content={<ChartTooltip fmt={(v: number) => fmtPct(v, 2)} />} cursor={{ fill: 'rgba(79,70,229,0.05)' }} />
                 <Bar dataKey="pct" name="AI % of revenue" radius={[5, 5, 0, 0]} maxBarSize={80} isAnimationActive={false}>
                   {pctRevBars.map((b, i) => <Cell key={i} fill={b.isCoral ? RED : SLATE} />)}
-                  <LabelList dataKey="pct" position="top" formatter={(v: any) => fmtPct(Number(v), Number(v) > 0.05 ? 1 : 2)} style={{ fill: AXIS, fontSize: 12, fontWeight: 700 }} />
+                  <LabelList dataKey="pct" position="top" formatter={(v: unknown) => fmtPct(Number(v), Number(v) > 0.05 ? 1 : 2)} style={{ fill: AXIS, fontSize: 12, fontWeight: 700 }} />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
@@ -156,7 +164,7 @@ export function AiSpend() {
                 <PieChart>
                   <Pie data={providers.data.group_mix} dataKey="spend_usd" nameKey="provider" cx="50%" cy="50%"
                     innerRadius={66} outerRadius={104} paddingAngle={2} isAnimationActive={false}
-                    label={(p: any) => `${p.provider} ${p.pct_of_group.toFixed(0)}%`}
+                    label={(p: unknown) => { const row = p as ProviderMix; return `${row.provider} ${row.pct_of_group.toFixed(0)}%` }}
                     labelLine={false} stroke="#fff" strokeWidth={2}>
                     {providers.data.group_mix.map((p, i) => <Cell key={i} fill={PROVIDER_COLORS[p.provider] || '#94a3b8'} />)}
                   </Pie>
@@ -171,7 +179,7 @@ export function AiSpend() {
                 <PieChart>
                   <Pie data={providers.data.tier_split} dataKey="spend_usd" nameKey="tier" cx="50%" cy="50%"
                     innerRadius={66} outerRadius={104} paddingAngle={2} isAnimationActive={false}
-                    label={(p: any) => `${p.tier} ${p.pct.toFixed(0)}%`}
+                    label={(p: unknown) => { const row = p as TierSplit; return `${row.tier} ${row.pct.toFixed(0)}%` }}
                     labelLine={false} stroke="#fff" strokeWidth={2}>
                     {providers.data.tier_split.map((s, i) => <Cell key={i} fill={TIER_COLORS[s.tier] || '#94a3b8'} />)}
                   </Pie>
@@ -193,7 +201,7 @@ export function AiSpend() {
                   <CartesianGrid stroke={GRID} vertical={false} />
                   <XAxis dataKey="month" tickFormatter={fmtMonthLabel} tick={{ fill: AXIS_FAINT, fontSize: 11 }} axisLine={false} tickLine={false} minTickGap={24} />
                   <YAxis tickFormatter={(v) => `${(v * 100).toFixed(1)}%`} tick={{ fill: AXIS_FAINT, fontSize: 11 }} axisLine={false} tickLine={false} width={46} />
-                  <Tooltip content={<ChartTooltip fmt={(v: number) => fmtPct(v, 2)} />} labelFormatter={fmtMonthLabel as any} />
+                  <Tooltip content={<ChartTooltip fmt={(v: number) => fmtPct(v, 2)} />} labelFormatter={(label) => fmtMonthLabel(String(label))} />
                   <Line type="monotone" dataKey="ai_pct_revenue" name="AI % of revenue" stroke="#0d9488" strokeWidth={2.5} dot={{ r: 2 }} />
                 </LineChart>
               </ResponsiveContainer>
@@ -264,7 +272,7 @@ export function AiSpend() {
               </table>
             </div>
             <div className="fs-caption" style={{ marginTop: 10 }}>
-              Spend, request volume and tokens per model — straight from the AI Gateway usage logs. Ask Genie in the next tab to dig into who's driving it.
+              Synthetic spend, request volume and token data modeled after AI Gateway usage logs. Ask Genie in the next tab to dig into what's driving it.
             </div>
           </Card>
 

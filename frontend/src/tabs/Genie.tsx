@@ -39,6 +39,12 @@ function isNumeric(v: string) {
   return v != null && v.trim() !== '' && !isNaN(Number(v))
 }
 
+interface ResultTooltipProps {
+  active?: boolean
+  payload?: ReadonlyArray<{ value?: unknown }>
+  label?: unknown
+}
+
 // If result is a dimension + single numeric measure, show a small bar chart.
 function ResultChart({ columns, rows }: { columns: string[]; rows: string[][] }) {
   if (columns.length !== 2 || rows.length < 2 || rows.length > 12) return null
@@ -53,8 +59,8 @@ function ResultChart({ columns, rows }: { columns: string[]; rows: string[][] })
         <XAxis dataKey="name" tick={{ fill: '#64748b', fontSize: 11 }} axisLine={false} tickLine={false} interval={0} />
         <YAxis tick={{ fill: '#94a3b8', fontSize: 10 }} axisLine={false} tickLine={false} width={64}
           tickFormatter={(v) => Number(v).toLocaleString('en-US', { notation: 'compact' })} />
-        <Tooltip content={({ active, payload, label }: any) => active && payload?.length ? (
-          <div className="tooltip-card"><div className="t-label">{label}</div>
+        <Tooltip content={({ active, payload, label }: ResultTooltipProps) => active && payload?.length ? (
+          <div className="tooltip-card"><div className="t-label">{String(label ?? '')}</div>
             <div className="t-row"><span>{columns[1]}</span><strong>{Number(payload[0].value).toLocaleString()}</strong></div></div>
         ) : null} cursor={{ fill: 'rgba(79,70,229,0.05)' }} />
         <Bar dataKey="value" fill="#4f46e5" radius={[5, 5, 0, 0]} maxBarSize={64} />

@@ -8,15 +8,23 @@ import { Card, ErrorNote, KpiCard, KpiSkeletonRow, SectionTitle, Skeleton } from
 
 const GEO_COLORS: Record<string, string> = { US: '#6366f1', Canada: '#2dd4bf', Australia: '#fbbf24' }
 
-function ChartTooltip({ active, payload, label, fmt }: any) {
+interface TooltipEntry { color?: string; name?: string; value?: unknown }
+interface ChartTooltipProps {
+  active?: boolean
+  payload?: TooltipEntry[]
+  label?: unknown
+  fmt?: (value: number) => string
+}
+
+function ChartTooltip({ active, payload, label, fmt }: ChartTooltipProps) {
   if (!active || !payload?.length) return null
   return (
     <div className="tooltip-card">
-      <div className="t-label">{label}</div>
-      {payload.map((p: any, i: number) => (
+      <div className="t-label">{String(label ?? '')}</div>
+      {payload.map((p, i) => (
         <div className="t-row" key={i}>
           <span style={{ color: p.color }}>{p.name}</span>
-          <strong>{fmt ? fmt(p.value) : p.value}</strong>
+          <strong>{fmt ? fmt(Number(p.value)) : String(p.value ?? '')}</strong>
         </div>
       ))}
     </div>
@@ -76,7 +84,7 @@ export function GroupPerf() {
               <ReferenceLine y={0} stroke="rgba(148,163,184,0.45)" />
               <Bar dataKey="ebitda" name="EBITDA" radius={[6, 6, 0, 0]} maxBarSize={130} isAnimationActive={false}>
                 {entities.data.snapshot.map((e, i) => <Cell key={i} fill={e.ebitda >= 0 ? '#34d399' : '#f87171'} />)}
-                <LabelList dataKey="ebitda" position="top" formatter={(v: any) => fmtMoney(Number(v), { signed: true })} fill="#cbd5e1" fontSize={12.5} fontWeight={700} />
+                <LabelList dataKey="ebitda" position="top" formatter={(v: unknown) => fmtMoney(Number(v), { signed: true })} fill="#cbd5e1" fontSize={12.5} fontWeight={700} />
               </Bar>
             </BarChart>
           </ResponsiveContainer>
@@ -99,7 +107,7 @@ export function GroupPerf() {
                 <CartesianGrid stroke="rgba(120,140,220,0.08)" vertical={false} />
                 <XAxis dataKey="month" tickFormatter={fmtMonthLabel} tick={{ fill: '#6b7aa3', fontSize: 11 }} axisLine={false} tickLine={false} minTickGap={28} />
                 <YAxis tickFormatter={(v) => fmtMoney(v)} tick={{ fill: '#6b7aa3', fontSize: 11 }} axisLine={false} tickLine={false} width={52} />
-                <Tooltip content={<ChartTooltip fmt={fmtMoney} />} labelFormatter={fmtMonthLabel as any} />
+                <Tooltip content={<ChartTooltip fmt={fmtMoney} />} labelFormatter={(label) => fmtMonthLabel(String(label))} />
                 <Area type="monotone" dataKey="net_revenue" name="Net Revenue" stroke="#6366f1" strokeWidth={2} fill="url(#nr)" />
               </AreaChart>
             </ResponsiveContainer>

@@ -90,8 +90,8 @@ cash) with their MoM/YoY direction.
 Structure your read so it covers, in order:
 1. One opening sentence: overall read of group health.
 2. The headline numbers with direction (ARR, net revenue, gross margin, FCF, cash).
-3. The KEY RISK: Coral Pay (Australia) is burning roughly $14M/month with only \
-about 10 months of runway, dragging down group free cash flow. Call this out clearly.
+3. The KEY RISK: identify the entity with the weakest free cash flow from the supplied \
+figures. Discuss burn or runway only when that exact number is present in the context.
 4. The POSITIVE: Northcrest (Canada) is margin-accretive to the group.
 5. End with a short line starting with "**Watch:**" giving ONE recommended action."""
 

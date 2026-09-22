@@ -1,0 +1,10 @@
+# Databricks sync should omit local tooling while including the production SPA.
+.git/
+.env
+frontend/.env
+frontend/node_modules/
+__pycache__/
+*.pyc
+
+!frontend/dist/
+!frontend/dist/**

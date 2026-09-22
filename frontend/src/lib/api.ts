@@ -121,33 +121,6 @@ export interface AiTeams {
   lever: RoutingLever | null
 }
 
-export interface AgentScenario {
-  name: string
-  lever_description: string
-  ebitda: number
-  free_cash_flow: number
-  burn_rate: number
-  runway_months: number | null
-  runway_delta_vs_baseline: number | null
-  is_breakeven?: boolean
-  monthly_gap?: number
-  annual_gap?: number
-  opex_cut_pct?: number
-}
-export interface AgentRecommendation { title: string; detail: string }
-export interface AgentPlanResp {
-  entity_id: string
-  entity_name: string
-  geography: string
-  generated_for_month: string
-  situation: string
-  baseline: AgentScenario
-  scenarios: AgentScenario[]
-  recommendations: AgentRecommendation[]
-  board_narrative: string
-  model: string
-}
-
 export interface SynthesisResp {
   synthesis_markdown: string
   model: string
@@ -173,7 +146,6 @@ export const api = {
   aiProviders: () => get<AiProviders>('/ai/providers'),
   aiTeams: (entityId = 'ENT03') => get<AiTeams>(`/ai/teams?entity_id=${encodeURIComponent(entityId)}`),
   synthesis: () => get<SynthesisResp>('/synthesis'),
-  agentPlan: (entityId = 'ENT03') => get<AgentPlanResp>(`/agent/plan?entity_id=${encodeURIComponent(entityId)}`),
   askGenie: async (question: string, conversationId?: string): Promise<GenieResponse> => {
     const res = await fetch('/api/genie/ask', {
       method: 'POST',
@@ -191,7 +163,6 @@ export function useFetch<T>(fn: () => Promise<T>, deps: unknown[] = []): { data:
   const [error, setError] = useState<string | null>(null)
   useEffect(() => {
     let alive = true
-    setLoading(true)
     fn()
       .then((d) => { if (alive) { setData(d); setError(null) } })
       .catch((e) => { if (alive) setError(String(e)) })
